@@ -1,0 +1,387 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="language" content="en" />
+
+    <link rel="stylesheet" type="text/css" href="src/css/core.css" media="screen, projection" />
+    <link rel="stylesheet" type="text/css" href="src/css/principal.css" />
+    <link rel="stylesheet" type="text/css" href="src/css/nav.css" />
+    <link rel="stylesheet" type="text/css" href="src/css/content.css" />
+    <link rel="stylesheet" type="text/css" href="src/css/form.css" />
+    <link rel="stylesheet" type="text/css" href="src/css/footer.css" />
+
+    <title>WorldSkills Leipzig / Leipziger Verkehrsbetriebe</title>
+    <script>
+      if (!localStorage.token) {
+        window.location.href = 'login.html';
+      }
+    </script>
+    <style>
+      .table-style {
+        border-collapse: collapse;
+      }
+      .table-style td,
+      .table-style th {
+        border: 1px solid black;
+      }
+      .table-style tr:nth-child(even) {
+        background-color: #dddddd;
+      }
+      .btn-info {
+        background-color: rgb(25, 25, 241);
+        color: white;
+        cursor: pointer;
+        padding: 10px 5px;
+        border: none;
+        border-radius: 5px;
+      }
+      .btn-danger {
+        background-color: rgb(241, 25, 47);
+        color: white;
+        cursor: pointer;
+        padding: 10px 5px;
+        border: none;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container" id="page">
+      <a href="index.html">
+        <div id="header">
+          <div id="logo"><!--WorldSkills Leipzig / Leipziger Verkehrsbetriebe--></div>
+        </div></a
+      >
+
+      <div id="mainmenu">
+        <ul>
+          <li>
+            <a href="line.html" title="Line"
+              ><span style="background-image: url(src/images/line.png)"></span
+              ><!--Line--></a
+            >
+          </li>
+          <li>
+            <a href="station.html" title="Station"
+              ><span style="background-image: url(src/images/station.png)"></span
+              ><!--Station--></a
+            >
+          </li>
+          <li>
+            <a href="vehicle.html" title="Vehicle"
+              ><span style="background-image: url(src/images/vehicle.png)"></span
+              ><!--Vehicle--></a
+            >
+          </li>
+          <li>
+            <a href="driver.html" title="Driver"
+              ><span style="background-image: url(src/images/driver.png)"></span
+              ><!--Driver--></a
+            >
+          </li>
+          <li>
+            <a href="xml.html" title="XML-XSD"
+              ><span style="background-image: url(src/images/xml.png)"></span
+              ><!--XML Schema--></a
+            >
+          </li>
+          <li>
+            <a href="user.html" title="User"
+              ><span style="background-image: url(src/images/user.png)"></span
+              ><!--User--></a
+            >
+          </li>
+        </ul>
+
+        <!-- Login / Logout -->
+        <div id="access">
+          <div>Webmaster (<a href="#">Logout</a>)</div>
+        </div>
+      </div>
+
+      <!-- mainmenu -->
+      <div class="breadcrumbs"><a href="#">Home</a> &raquo; <a href="#">Station</a> &raquo; <span>Create</span></div>
+      <!-- breadcrumbs -->
+
+      <div class="span-19">
+        <div id="message"></div>
+        <div id="content">
+          <h1>Create Station</h1>
+
+          <div class="form">
+            <form id="station-form" onsubmit="storeStation(event)">
+              <p class="note">Fields with <span class="required">*</span> are required.</p>
+
+              <div class="row">
+                <label for="Station_name" class="required">Name <span class="required">*</span></label> <input size="60" maxlength="80" name="name" id="Station_name" type="text" />
+              </div>
+              <div class="row">
+                <label for="position_station" class="required">Position Station <span class="required">*</span></label>
+                <select name="position_station" id="position_station">
+                  <option value="START">Start</option>
+                  <option value="MIDDLE">Middle</option>
+                  <option value="FINISH">FInish</option>
+                </select>
+              </div>
+              <div class="row">
+                <label for="line_id" class="required">Line <span class="required">*</span></label>
+                <select name="line_id" id="line_id"></select>
+              </div>
+
+              <div class="row buttons">
+                <input type="submit" name="yt0" value="Create" />
+              </div>
+            </form>
+          </div>
+          <!-- form -->
+        </div>
+
+        <!-- content -->
+      </div>
+      <div class="span-5 last">
+        <div id="sidebar">
+          <div class="portlet">
+            <div class="portlet-decoration">
+              <div class="portlet-title">Operations</div>
+            </div>
+            <div class="portlet-content">
+              <ul class="operations">
+                <li><a href="#list" onclick="stationList()">List Station</a></li>
+                <li><a href="#manage" onclick="createStation()">Manage Station</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!-- sidebar -->
+      </div>
+
+      <div class="clear"></div>
+
+      <div id="footer">
+        <ul>
+          <li class="sitemap"><a href="#">Site Map</a></li>
+          <li class="copyr"><a href="#">Copyright &copy; 2013 by LVB</a></li>
+          <li class="allright">
+            <a href="#">All Rights Reserved. <br />By WorldSkills International</a>
+          </li>
+        </ul>
+      </div>
+      <!-- footer -->
+    </div>
+    <!-- page -->
+
+    <script>
+      function setRemoveSession() {
+        if (localStorage.message) {
+          const message = document.getElementById('message');
+          const h4 = document.createElement('h4');
+          h4.innerHTML = localStorage.message;
+          h4.style.color = 'rgb(40, 40, 254)';
+          message.appendChild(h4);
+          localStorage.removeItem('message');
+        }
+      }
+    </script>
+    <script>
+      const form_create = document.getElementById('station-form');
+      const content = document.getElementById('content');
+      window.addEventListener('load', getLine());
+      async function getLine() {
+        const line_selector = document.getElementById('line_id');
+        let string = ``;
+        const fetching_line = await fetch('http://127.0.0.1:8000/api/line', {
+          method: 'GET',
+          headers: {
+            Authorization: localStorage.token,
+          },
+        });
+        const line_result = await fetching_line.json();
+        console.log(line_result);
+        line_result.data.map((line) => {
+          string += `
+                <option value="${line.id}">${line.code}</option>
+                `;
+        });
+        line_selector.innerHTML = string;
+      }
+
+      // store data station
+      async function storeStation(e) {
+        e.preventDefault();
+        const store_form_station = new FormData(form_create);
+        const store_station = await fetch('http://127.0.0.1:8000/api/station', {
+          method: 'POST',
+          headers: {
+            Authorization: localStorage.token,
+          },
+          body: store_form_station,
+        }).catch((err) => console.log(err));
+        const result = await store_station.json();
+        localStorage.message = result.message;
+        stationList();
+        setRemoveSession();
+      }
+
+      async function getStation(all_station) {
+        let string = `<table class="table-style">
+                    <tr>
+                      <th>Name</th>
+                      <th>Position Station</th>
+                      <th>Line</th>
+                      <th>Action</th>
+                    </tr>`;
+        all_station.data.map(function (single) {
+          return (string += `<tr>
+                      <td>${single.name}</td>
+                      <td>${single.position_station}</td>
+                      <td>${single.line.code}</td>
+                      <td>
+                        <button class='btn-info' onclick='editStationButton(this)' id='${single.id}'>Edit</button>
+                        <button class='btn-danger' onclick='deleteStationButton(this)' id='${single.id}'>Hapus</button>
+                      </td>
+                    </tr>`);
+        });
+        string += `</table>`;
+        return string;
+      }
+      async function stationList() {
+        const station_list = await fetch('http://127.0.0.1:8000/api/station', {
+          method: 'GET',
+          headers: {
+            Authorization: localStorage.token,
+          },
+        }).catch((err) => console.log(err));
+        const result = await station_list.json();
+        console.log(result);
+        const table_station_list = await getStation(result);
+        content.innerHTML = table_station_list;
+      }
+
+      async function createStation() {
+        content.innerHTML = `<h1>Create Station</h1>
+
+      <div class="form">
+        <form id="station-form" onsubmit="storeStation(event)">
+          <p class="note">Fields with <span class="required">*</span> are required.</p>
+
+          <div class="row">
+            <label for="Station_name" class="required">Name <span class="required">*</span></label> <input size="60" maxlength="80" name="name" id="Station_name" type="text" />
+          </div>
+          <div class="row">
+            <label for="position_station" class="required">Position Station <span class="required">*</span></label>
+            <select name="position_station" id="position_station">
+              <option value="START">Start</option>
+              <option value="MIDDLE">Middle</option>
+              <option value="FINISH">FInish</option>
+            </select>
+          </div>
+          <div class="row">
+            <label for="line_id" class="required">Line <span class="required">*</span></label>
+            <select name="line_id" id="line_id"></select>
+          </div>
+
+          <div class="row buttons">
+            <input type="submit" name="yt0" value="Create" />
+          </div>
+        </form>
+      </div>`;
+        await getLine();
+      }
+      async function deleteStationButton(e) {
+        const delete_station = await fetch(`http://127.0.0.1:8000/api/station/${e.id}`, {
+          method: 'DELETE',
+          headers: {
+            Authorization: localStorage.token,
+          },
+        });
+        const result = await delete_station.json();
+        localStorage.message = result.message;
+        stationList();
+        setRemoveSession();
+      }
+
+      async function editStationButton(e) {
+        const edit_station = await fetch(`http://127.0.0.1:8000/api/station/${e.id}/edit`, {
+          method: 'GET',
+          headers: {
+            Authorization: localStorage.token,
+          },
+        });
+        const result = await edit_station.json();
+        await edit_form(result);
+        const select_line_id = document.getElementById('line_id');
+        const select_position_station = document.getElementById('position_station');
+        const option_line_id = select_line_id.options;
+        const option_position_station = select_position_station.options;
+        for (let i = 0; i < option_line_id.length; i++) {
+          if (option_line_id[i].value == result.data.line_id) {
+            option_line_id[i].setAttribute('selected', true);
+          }
+        }
+        for (let x = 0; x < option_position_station.length; x++) {
+          if (option_position_station[x].value == result.data.position_station) {
+            option_position_station[x].setAttribute('selected', true);
+          }
+        }
+      }
+      async function edit_form(station) {
+        content.innerHTML = `<h1>Edit Station</h1>
+
+      <div class="form">
+        <form id="edit-station-form" onsubmit="updateStationButton(event)">
+          <p class="note">Fields with <span class="required">*</span> are required.</p>
+
+          <div class="row">
+            <input name='station_id' id='station_id' value='${station.data.id}'  />
+            <label for="Station_name" class="required">Name <span class="required">*</span></label> <input size="60" maxlength="80" name="name" value="${station.data.name}" id="Station_name" type="text" />
+          </div>
+          <div class="row">
+            <label for="position_station" class="required">Position Station <span class="required">*</span></label>
+            <select name="position_station" id="position_station">
+              <option value="START">Start</option>
+              <option value="MIDDLE">Middle</option>
+              <option value="FINISH">FInish</option>
+            </select>
+          </div>
+          <div class="row">
+            <label for="line_id" class="required">Line <span class="required">*</span></label>
+            <select name="line_id" id="line_id"></select>
+          </div>
+
+          <div class="row buttons">
+            <input type="submit" name="yt0" value="Create" />
+          </div>
+        </form>
+      </div>`;
+        await getLine();
+      }
+      async function updateStationButton(e) {
+        e.preventDefault();
+        const station_id = document.getElementById('station_id').value;
+        const name = document.querySelector('[name="name"]').value;
+        const position_station = document.querySelector('[name="position_station"]').value;
+        const line_id = document.querySelector('[name="line_id"]').value;
+        const data = {
+          name: name,
+          position_station: position_station,
+          line_id: line_id,
+        };
+        const update_station = await fetch(`http://127.0.0.1:8000/api/station/${station_id}`, {
+          method: 'PUT',
+          headers: {
+            Authorization: localStorage.token,
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+        const result = await update_station.json();
+        console.log(result);
+        localStorage.message = result.message;
+        setRemoveSession();
+        await stationList();
+      }
+    </script>
+  </body>
+</html>

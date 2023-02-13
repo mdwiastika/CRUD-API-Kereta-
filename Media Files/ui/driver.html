@@ -1,0 +1,429 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="language" content="en" />
+
+    <link rel="stylesheet" type="text/css" href="src/css/core.css" media="screen, projection" />
+    <link rel="stylesheet" type="text/css" href="src/css/principal.css" />
+    <link rel="stylesheet" type="text/css" href="src/css/nav.css" />
+    <link rel="stylesheet" type="text/css" href="src/css/content.css" />
+    <link rel="stylesheet" type="text/css" href="src/css/form.css" />
+    <link rel="stylesheet" type="text/css" href="src/css/footer.css" />
+
+    <title>WorldSkills Leipzig / Leipziger Verkehrsbetriebe</title>
+    <style>
+      .table-style {
+        border-collapse: collapse;
+      }
+      .table-style td,
+      .table-style th {
+        border: 1px solid black;
+      }
+      .table-style tr:nth-child(even) {
+        background-color: #dddddd;
+      }
+      .btn-info {
+        background-color: rgb(25, 25, 241);
+        color: white;
+        cursor: pointer;
+        padding: 7px 4px;
+        border: none;
+        border-radius: 5px;
+        display: inline-block;
+      }
+      .btn-danger {
+        background-color: rgb(241, 25, 47);
+        color: white;
+        cursor: pointer;
+        padding: 7px 4px;
+        border: none;
+        border-radius: 5px;
+        display: inline-block;
+      }
+    </style>
+    <script>
+      if (!localStorage.token) {
+        window.location.href = 'login.html';
+      }
+      function setRemoveLocal() {
+        if (localStorage.message) {
+          message.innerHTML = localStorage.message;
+          localStorage.removeItem('message');
+        }
+      }
+    </script>
+  </head>
+
+  <body>
+    <div class="container" id="page">
+      <a href="index.html">
+        <div id="header">
+          <div id="logo"><!--WorldSkills Leipzig / Leipziger Verkehrsbetriebe--></div>
+        </div></a
+      >
+
+      <div id="mainmenu">
+        <ul>
+          <li>
+            <a href="line.html" title="Line"
+              ><span style="background-image: url(src/images/line.png)"></span
+              ><!--Line--></a
+            >
+          </li>
+          <li>
+            <a href="station.html" title="Station"
+              ><span style="background-image: url(src/images/station.png)"></span
+              ><!--Station--></a
+            >
+          </li>
+          <li>
+            <a href="vehicle.html" title="Vehicle"
+              ><span style="background-image: url(src/images/vehicle.png)"></span
+              ><!--Vehicle--></a
+            >
+          </li>
+          <li>
+            <a href="driver.html" title="Driver"
+              ><span style="background-image: url(src/images/driver.png)"></span
+              ><!--Driver--></a
+            >
+          </li>
+          <li>
+            <a href="xml.html" title="XML-XSD"
+              ><span style="background-image: url(src/images/xml.png)"></span
+              ><!--XML Schema--></a
+            >
+          </li>
+          <li>
+            <a href="user.html" title="User"
+              ><span style="background-image: url(src/images/user.png)"></span
+              ><!--User--></a
+            >
+          </li>
+        </ul>
+
+        <!-- Login / Logout -->
+        <div id="access"></div>
+      </div>
+
+      <!-- mainmenu -->
+      <div class="breadcrumbs"><a href="#">Home</a> &raquo; <a href="#">Driver</a> &raquo; <span>Create</span></div>
+      <!-- breadcrumbs -->
+
+      <div class="span-19" id="contain">
+        <div class="message" id="message"></div>
+        <div id="content">
+          <!-- form -->
+        </div>
+        <!-- content -->
+      </div>
+      <div class="span-5 last">
+        <div id="sidebar">
+          <div class="portlet">
+            <div class="portlet-decoration">
+              <div class="portlet-title">Operations</div>
+            </div>
+            <div class="portlet-content">
+              <ul class="operations">
+                <li><a href="#list" onclick="listDriver()">List Driver</a></li>
+                <li><a href="#manage" onclick="createDriver()">Manage Driver</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!-- sidebar -->
+      </div>
+
+      <div class="clear"></div>
+
+      <div id="footer">
+        <ul>
+          <li class="sitemap"><a href="#">Site Map</a></li>
+          <li class="copyr"><a href="#">Copyright &copy; 2013 by LVB</a></li>
+          <li class="allright">
+            <a href="#">All Rights Reserved. <br />By WorldSkills International</a>
+          </li>
+        </ul>
+      </div>
+      <!-- footer -->
+    </div>
+    <!-- page -->
+    <script>
+      createDriver();
+      window.addEventListener('load', async () => {
+        setRemoveLocal();
+        await getUser();
+      });
+      async function getVehicleCode(choice_vehicle) {
+        const fetching_vehicle = await fetch('http://127.0.0.1:8000/api/vehicle', {
+          method: 'GET',
+          headers: {
+            Authorization: localStorage.token,
+          },
+        });
+        const result = await fetching_vehicle.json();
+        let all_option = '';
+        result.data.map((value) => {
+          if (value.type == choice_vehicle) {
+            all_option += `<option value="${value.id}">${value.name}</option>`;
+          }
+        });
+        return all_option;
+      }
+      async function getUser() {
+        const fetching_user = await fetch('http://127.0.0.1:8000/api/user', {
+          method: 'GET',
+          headers: {
+            Authorization: localStorage.token,
+          },
+        });
+        const result = await fetching_user.json();
+        access.innerHTML = ` <div>${result.name} (<a href="#">Logout</a>)</div>`;
+      }
+      function createDriver() {
+        let form_create_driver = `  <h1>Create Driver</h1>
+
+          <div class="form">
+            <form enctype="multipart/form-data" id="driver-form">
+              <p class="note">Fields with <span class="required">*</span> are required.</p>
+
+              <div class="row">
+                <label for="Driver_name" class="required">Name <span class="required">*</span></label> <input size="45" maxlength="45" name="name" id="Driver_name" type="text" />
+              </div>
+
+              <div class="row">
+                <label for="Driver_birth_date" class="required">Birth Date <span class="required">*</span></label> <input id="Driver_birth_date" name="birth_date" type="date" class="hasDatepicker" />
+              </div>
+
+              <div class="row">
+                <label for="Driver_email" class="required">Email <span class="required">*</span></label> <input size="50" maxlength="50" name="email" id="Driver_email" type="text" />
+              </div>
+
+              <div class="row">
+                <label for="Driver_phone" class="required">Phone <span class="required">*</span></label> <input size="40" maxlength="40" name="phone" id="Driver_phone" type="text" />
+              </div>
+
+              <div class="row">
+                <label for="Driver_avatar">Avatar</label>
+
+                <input id="ytDriver_avatar" type="hidden" value="" name="Driver[avatar]" /><input name="avatar" id="Driver_avatar" type="file" />
+              </div>
+
+              <div class="row">
+                <label for="type" class="required">Type Vehicle <span class="required">*</span></label>
+                <select name="type" id="type">
+                  <option value="">--Pilih--</option>
+                  <option value="Tram">Tram</option>
+                  <option value="Bus">Bus</option>
+                  <option value="Autobus">Autobus</option>
+                  <option value="Nightliner">Nightliner</option>
+                  <option value="Regionalbus">Regionalbus</option>
+                </select>
+              </div>
+              <div class="row">
+                <label for="">Vehicle Code</label>
+                <select name="vehicle_id" id="vehicle_id"></select>
+              </div>
+
+              <div class="row buttons">
+                <input type="submit" name="yt0" value="Create" />
+              </div>
+            </form>
+          </div>`;
+        content.innerHTML = form_create_driver;
+        type.addEventListener('change', async function () {
+          const vehicle = await getVehicleCode(this.value);
+          vehicle_id.innerHTML = vehicle;
+        });
+        const driver_form = document.getElementById('driver-form');
+        driver_form.addEventListener('submit', async function (e) {
+          e.preventDefault();
+          console.log(this, e);
+          storeDriver();
+        });
+      }
+      async function storeDriver() {
+        const driver_form = document.getElementById('driver-form');
+        const form_data = new FormData(driver_form);
+        const fetching_user = await fetch('http://127.0.0.1:8000/api/driver', {
+          method: 'POST',
+          headers: {
+            Authorization: localStorage.token,
+          },
+          body: form_data,
+        });
+        const result = await fetching_user.json();
+        console.log(result);
+        localStorage.message = result.message;
+        setRemoveLocal();
+      }
+
+      async function listDriver() {
+        const fetching_driver = await fetch('http://127.0.0.1:8000/api/driver', {
+          method: 'GET',
+          headers: {
+            Authorization: localStorage.token,
+          },
+        });
+        const result = await fetching_driver.json();
+        let string = `<table class="table-style">
+              <tr>
+                <th>Name</th>
+                <th>Birthdate</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Type</th>
+                <th>Vehicle</th>
+                <th>Action</th>
+              </tr>`;
+        result.data.map(function (single) {
+          string += `<tr>
+                      <td>${single.name}</td>
+                      <td>${single.birth_date}</td>
+                      <td>${single.email}</td>
+                      <td>${single.phone}</td>
+                      <td>${single.type}</td>
+                      <td>${single.vehicle.name}</td>
+                      <td>
+                        <button class='btn-info' onclick='editDriver(this)' id='${single.id}'>Edit</button>
+                        <button class='btn-danger' onclick='deleteDriver(this)' id='${single.id}'>Hapus</button>  
+                      </td>
+                    </tr>`;
+        });
+        string += `</table>`;
+        content.innerHTML = string;
+      }
+      async function editDriver(e) {
+        const fetching_data = await fetch(`http://127.0.0.1:8000/api/driver/${e.id}/edit`, {
+          method: 'GET',
+          headers: {
+            Authorization: localStorage.token,
+          },
+        });
+        const result = await fetching_data.json();
+        console.log(result);
+        const option_vehicle = await getVehicleCode(result.data.vehicle.type);
+        let form_create_driver = `  <h1>Edit Driver</h1>
+
+          <div class="form">
+            <form enctype="multipart/form-data" id="edit-driver-form">
+              <p class="note">Fields with <span class="required">*</span> are required.</p>
+
+              <div class="row">
+                <input type="hidden" id="driver_id" value="${result.data.id}" />
+                <label for="Driver_name" class="required">Name <span class="required">*</span></label> <input size="45" maxlength="45" name="name" id="name" value=${result.data.name} type="text" />
+              </div>
+
+              <div class="row">
+                <label for="Driver_birth_date" class="required">Birth Date <span class="required">*</span></label> <input id="birth_date" name="birth_date" type="datetime-local" value=${result.data.birt_date} class="hasDatepicker" />
+              </div>
+
+              <div class="row">
+                <label for="Driver_email" class="required">Email <span class="required">*</span></label> <input size="50" maxlength="50" name="email" id="email" value=${result.data.email} type="text" />
+              </div>
+
+              <div class="row">
+                <label for="Driver_phone" class="required">Phone <span class="required">*</span></label> <input size="40" maxlength="40" name="phone" id="phone" value=${result.data.phone} type="text" />
+              </div>
+
+              <div class="row">
+                <label for="Driver_avatar">Avatar</label>
+
+                <input id="avatar" type="hidden" value="" name="Driver[avatar]" /><input name="avatar" id="Driver_avatar" type="file" />
+              </div>
+
+              <div class="row">
+                <label for="type" class="required">Type Vehicle <span class="required">*</span></label>
+                <select name="type" id="type">
+                  <option value="">--Pilih--</option>
+                  <option value="Tram">Tram</option>
+                  <option value="Bus">Bus</option>
+                  <option value="Autobus">Autobus</option>
+                  <option value="Nightliner">Nightliner</option>
+                  <option value="Regionalbus">Regionalbus</option>
+                </select>
+              </div>
+              <div class="row">
+                <label for="">Vehicle Code</label>
+                <select name="vehicle_id" id="vehicle_id"></select>
+              </div>
+
+              <div class="row buttons">
+                <input type="submit" name="yt0" value="Create" />
+              </div>
+            </form>
+          </div>`;
+        content.innerHTML = form_create_driver;
+        vehicle_id.innerHTML = option_vehicle;
+        const type_options = document.getElementById('type').options;
+        const vehicle_options = document.getElementById('vehicle_id').options;
+        const driver_id = document.getElementById('driver_id').value;
+        for (let i = 0; i < type_options.length; i++) {
+          if (type_options[i].value == result.data.type) {
+            type_options[i].setAttribute('selected', true);
+          }
+        }
+        for (let x = 0; x < vehicle_options.length; x++) {
+          if (vehicle_options[x].value == result.data.vehicle.id) {
+            vehicle_options[x].setAttribute('selected', true);
+          }
+        }
+        type.addEventListener('change', async function () {
+          const vehicle = await getVehicleCode(this.value);
+          vehicle_id.innerHTML = vehicle;
+        });
+        const driver_form = document.getElementById('edit-driver-form');
+        driver_form.addEventListener('submit', async function (e) {
+          e.preventDefault();
+          console.log(this, e);
+          updateDriver(driver_id);
+        });
+      }
+      async function updateDriver(e) {
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const birth_date = document.getElementById('birth_date').value;
+        const phone = document.getElementById('phone').value;
+        const avatar = document.getElementById('avatar').value;
+        const type = document.getElementById('type').value;
+        const vehicle_id = document.getElementById('vehicle_id').value;
+        const data = {
+          name: name,
+          email: email,
+          birth_date: birth_date,
+          type: type,
+          phone: phone,
+          avatar: avatar,
+          vehicle_id: vehicle_id,
+        };
+        const fetching_driver = await fetch(`http://127.0.0.1:8000/api/driver/${e}`, {
+          method: 'PUT',
+          headers: {
+            Authorization: localStorage.token,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+        const result = await fetching_driver.json();
+        localStorage.message = result.data.message;
+        setRemoveLocal();
+        listDriver();
+      }
+      async function deleteDriver(e) {
+        const fetching_data = await fetch(`http://127.0.0.1:8000/api/driver/${e.id}`, {
+          method: 'DELETE',
+          headers: {
+            Authorization: localStorage.token,
+          },
+        });
+        const result = await fetching_data.json();
+        console.log(result);
+        localStorage.message = result.message;
+        listDriver();
+        setRemoveLocal();
+      }
+    </script>
+    <script></script>
+  </body>
+</html>

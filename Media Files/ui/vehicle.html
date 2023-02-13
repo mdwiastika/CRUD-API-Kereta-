@@ -1,0 +1,397 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="language" content="en" />
+
+    <link rel="stylesheet" type="text/css" href="src/css/core.css" media="screen, projection" />
+    <link rel="stylesheet" type="text/css" href="src/css/principal.css" />
+    <link rel="stylesheet" type="text/css" href="src/css/nav.css" />
+    <link rel="stylesheet" type="text/css" href="src/css/content.css" />
+    <link rel="stylesheet" type="text/css" href="src/css/form.css" />
+    <link rel="stylesheet" type="text/css" href="src/css/footer.css" />
+
+    <title>WorldSkills Leipzig / Leipziger Verkehrsbetriebe</title>
+    <style>
+      .table-style {
+        border-collapse: collapse;
+      }
+      .table-style td,
+      .table-style th {
+        border: 1px solid black;
+      }
+      .table-style tr:nth-child(even) {
+        background-color: #dddddd;
+      }
+      .btn-info {
+        background-color: rgb(25, 25, 241);
+        color: white;
+        cursor: pointer;
+        padding: 10px 5px;
+        border: none;
+        border-radius: 5px;
+      }
+      .btn-danger {
+        background-color: rgb(241, 25, 47);
+        color: white;
+        cursor: pointer;
+        padding: 10px 5px;
+        border: none;
+        border-radius: 5px;
+      }
+    </style>
+    <script>
+      if (!localStorage.token) {
+        window.location.href = 'login.html';
+      }
+    </script>
+  </head>
+
+  <body>
+    <div class="container" id="page">
+      <a href="index.html">
+        <div id="header">
+          <div id="logo"><!--WorldSkills Leipzig / Leipziger Verkehrsbetriebe--></div>
+        </div></a
+      >
+
+      <div id="mainmenu">
+        <ul>
+          <li>
+            <a href="line.html" title="Line"
+              ><span style="background-image: url(src/images/line.png)"></span
+              ><!--Line--></a
+            >
+          </li>
+          <li>
+            <a href="station.html" title="Station"
+              ><span style="background-image: url(src/images/station.png)"></span
+              ><!--Station--></a
+            >
+          </li>
+          <li>
+            <a href="vehicle.html" title="Vehicle"
+              ><span style="background-image: url(src/images/vehicle.png)"></span
+              ><!--Vehicle--></a
+            >
+          </li>
+          <li>
+            <a href="Driver.html" title="Driver"
+              ><span style="background-image: url(src/images/Driver.png)"></span
+              ><!--Driver--></a
+            >
+          </li>
+          <li>
+            <a href="xml.html" title="XML-XSD"
+              ><span style="background-image: url(src/images/xml.png)"></span
+              ><!--XML Schema--></a
+            >
+          </li>
+          <li>
+            <a href="user.html" title="User"
+              ><span style="background-image: url(src/images/user.png)"></span
+              ><!--User--></a
+            >
+          </li>
+        </ul>
+
+        <!-- Login / Logout -->
+        <div id="access"></div>
+      </div>
+      <!-- mainmenu -->
+      <div class="breadcrumbs"><a href="#">Home</a> &raquo; <a href="#">Vehicle</a> &raquo; <span>Create</span></div>
+      <!-- breadcrumbs -->
+
+      <div class="span-19">
+        <div id="content">
+          <h1>Create Vehicle</h1>
+
+          <div class="form">
+            <form id="vehicle-form" onsubmit="storeVehicleForm(event)">
+              <p class="note">Fields with <span class="required">*</span> are required.</p>
+
+              <div class="row">
+                <label for="Vehicle_name" class="required">Name <span class="required">*</span></label> <input size="30" maxlength="30" name="name" id="name" type="text" />
+              </div>
+
+              <div class="row">
+                <label for="Vehicle_capacity" class="required">Capacity <span class="required">*</span></label> <input name="capacity" id="capacity" type="text" />
+              </div>
+
+              <div class="row">
+                <label for="type">Type</label>
+                <select name="type" id="type">
+                  <option value="Tram">Tram</option>
+                  <option value="Bus">Bus</option>
+                  <option value="Nightliner">Nightliner</option>
+                  <option value="Regionalbus">Regionalbus</option>
+                </select>
+              </div>
+              <div class="row">
+                <label for="line_id">Line</label>
+                <select name="line_id" id="line_id"></select>
+              </div>
+
+              <div class="row buttons">
+                <input type="submit" name="yt0" value="Create" />
+              </div>
+            </form>
+          </div>
+          <!-- form -->
+        </div>
+        <!-- content -->
+      </div>
+      <div class="span-5 last">
+        <div id="sidebar">
+          <div class="portlet">
+            <div class="portlet-decoration">
+              <div class="portlet-title">Operations</div>
+            </div>
+            <div class="portlet-content">
+              <ul class="operations">
+                <li><a href="#list" onclick="getVehicleTable()">List Vehicle</a></li>
+                <li><a href="#manage" onclick="getVehicleCreate()">Manage Vehicle</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!-- sidebar -->
+      </div>
+
+      <div class="clear"></div>
+
+      <div id="footer">
+        <ul>
+          <li class="sitemap"><a href="#">Site Map</a></li>
+          <li class="copyr"><a href="#">Copyright &copy; 2013 by LVB</a></li>
+          <li class="allright">
+            <a href="#">All Rights Reserved. <br />By WorldSkills International</a>
+          </li>
+        </ul>
+      </div>
+      <!-- footer -->
+    </div>
+    <!-- page -->
+    <script>
+      window.addEventListener('load', async (e) => {
+        await getLine();
+      });
+      async function getLine() {
+        const line_id = document.getElementById('line_id');
+        const all_line = await fetch('http://127.0.0.1:8000/api/line', {
+          method: 'GET',
+          headers: {
+            Authorization: localStorage.token,
+          },
+        });
+        const result = await all_line.json();
+        let option_line = ``;
+        result.data.map((value) => {
+          return (option_line += `<option value="${value.id}">${value.code}</option>`);
+        });
+        line_id.innerHTML = option_line;
+      }
+      async function listVehicleTable() {
+        const fetching_vehicle = await fetch('http://127.0.0.1:8000/api/vehicle', {
+          method: 'GET',
+          headers: {
+            Authorization: localStorage.token,
+          },
+        });
+        const all_line = await fetching_vehicle.json();
+        console.log(all_line);
+        let string = `<table class="table-style">
+              <tr>
+                <th>Name</th>
+                <th>Capacity</th>
+                <th>Type</th>
+                <th>Line</th>
+                <th>Action</th>
+              </tr>`;
+        all_line.data.map(function (single) {
+          return (string += `<tr>
+                <td>${single.name}</td>
+                <td>${single.capacity}</td>
+                <td>${single.type}</td>
+                <td>${single.line.code}</td>
+                <td>
+                  <button class='btn-info' onclick='editVehicleButton(this)' id='${single.id}'>Edit</button>
+                  <button class='btn-danger' onclick='deleteVehicleButton(this)' id='${single.id}'>Hapus</button>
+                </td>
+              </tr>`);
+        });
+        string += `</table>`;
+        return string;
+      }
+    </script>
+    <script>
+      async function storeVehicleForm(e) {
+        e.preventDefault();
+        const form_create_vehicle = new FormData(e.currentTarget);
+        const store_form = await fetch('http://127.0.0.1:8000/api/vehicle', {
+          method: 'POST',
+          headers: {
+            Authorization: localStorage.token,
+          },
+          body: form_create_vehicle,
+        });
+        const result = await store_form.json();
+        console.log(result);
+        const vehicle_table = await listVehicleTable();
+        content.innerHTML = vehicle_table;
+      }
+      async function getVehicleTable() {
+        const vehicle_table = await listVehicleTable();
+        content.innerHTML = vehicle_table;
+      }
+      async function getVehicleCreate() {
+        const form_create = `<h1>Create Vehicle</h1>
+
+          <div class="form">
+            <form id="vehicle-form" onsubmit="storeVehicleForm(event)">
+              <p class="note">Fields with <span class="required">*</span> are required.</p>
+
+              <div class="row">
+                <label for="Vehicle_name" class="required">Name <span class="required">*</span></label> <input size="30" maxlength="30" name="name" id="name" type="text" />
+              </div>
+
+              <div class="row">
+                <label for="Vehicle_capacity" class="required">Capacity <span class="required">*</span></label> <input name="capacity" id="capacity" type="text" />
+              </div>
+
+              <div class="row">
+                <label for="type">Type</label>
+                <select name="type" id="type">
+                  <option value="Tram">Tram</option>
+                  <option value="Bus">Bus</option>
+                  <option value="Nightliner">Nightliner</option>
+                  <option value="Regionalbus">Regionalbus</option>
+                </select>
+              </div>
+              <div class="row">
+                <label for="line_id">Line</label>
+                <select name="line_id" id="line_id"></select>
+              </div>
+
+              <div class="row buttons">
+                <input type="submit" name="yt0" value="Create" />
+              </div>
+            </form>
+          </div>`;
+        content.innerHTML = form_create;
+        await getLine();
+      }
+      async function deleteVehicleButton(e) {
+        const fetching_delete = await fetch(`http://127.0.0.1:8000/api/vehicle/${e.id}`, {
+          method: 'DELETE',
+          headers: {
+            Authorization: localStorage.token,
+          },
+        });
+        const result = await fetching_delete.json();
+        console.log(result);
+        getVehicleTable();
+      }
+
+      async function editVehicleButton(e) {
+        const fetch_edit = await fetch(`http://127.0.0.1:8000/api/vehicle/${e.id}/edit`, {
+          method: 'GET',
+          headers: {
+            Authorization: localStorage.token,
+          },
+        });
+        const result = await fetch_edit.json();
+        const form_edit = `<h1>Edit Vehicle</h1>
+
+          <div class="form">
+            <form id="vehicle-form" onsubmit="updateVehicleForm(event)">
+              <input type="hidden" value="${e.id}" id="vehicle_id" />
+              <p class="note">Fields with <span class="required">*</span> are required.</p>
+
+              <div class="row">
+                <label for="Vehicle_name" class="required">Name <span class="required">*</span></label> <input size="30" maxlength="30" value="${result.data.name}" name="name" id="name" type="text" />
+              </div>
+
+              <div class="row">
+                <label for="Vehicle_capacity" class="required">Capacity <span class="required">*</span></label> <input name="capacity" value="${result.data.capacity}" id="capacity" type="text" />
+              </div>
+
+              <div class="row">
+                <label for="type">Type</label>
+                <select name="type" id="type">
+                  <option value="Tram">Tram</option>
+                  <option value="Bus">Bus</option>
+                  <option value="Nightliner">Nightliner</option>
+                  <option value="Regionalbus">Regionalbus</option>
+                </select>
+              </div>
+              <div class="row">
+                <label for="line_id">Line</label>
+                <select name="line_id" id="line_id"></select>
+              </div>
+
+              <div class="row buttons">
+                <input type="submit" name="yt0" value="Create" />
+              </div>
+            </form>
+          </div>`;
+        content.innerHTML = form_edit;
+        await getLine();
+        const type_select = document.getElementById('type');
+        const line_select = document.getElementById('line_id');
+        const type_options = type_select.options;
+        const line_options = line_select.options;
+        for (let x = 0; x < type_options.length; x++) {
+          if (type_options[x].value == result.data.type) {
+            type_options[x].setAttribute('selected', true);
+          }
+        }
+        for (let i = 0; i < line_options.length; i++) {
+          if (line_options[i].value == result.data.line_id) {
+            line_options[i].setAttribute('selected', true);
+          }
+        }
+      }
+      async function updateVehicleForm(e) {
+        e.preventDefault();
+        const name = document.getElementById('name').value;
+        const capacity = document.getElementById('capacity').value;
+        const type = document.getElementById('type').value;
+        const line_id = document.getElementById('line_id').value;
+        const data = {
+          name: name,
+          capacity: capacity,
+          type: type,
+          line_id: line_id,
+        };
+        const vehicle_id = document.getElementById('vehicle_id').value;
+        const update_vehicle = await fetch(`http://127.0.0.1:8000/api/vehicle/${vehicle_id}`, {
+          method: 'PUT',
+          headers: {
+            Authorization: localStorage.token,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+        const result = await update_vehicle.json();
+        console.log(result);
+        getVehicleTable();
+      }
+    </script>
+    <script>
+      window.addEventListener('load', async () => {
+        await getUser();
+      });
+      async function getUser() {
+        const fetching_user = await fetch('http://127.0.0.1:8000/api/user', {
+          method: 'GET',
+          headers: {
+            Authorization: localStorage.token,
+          },
+        });
+        const result = await fetching_user.json();
+        access.innerHTML = `<div>${result.name} (<a href="#">Logout</a>)</div>`;
+      }
+    </script>
+  </body>
+</html>

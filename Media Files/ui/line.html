@@ -1,0 +1,566 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="language" content="en" />
+
+    <link rel="stylesheet" type="text/css" href="src/css/core.css" media="screen, projection" />
+    <link rel="stylesheet" type="text/css" href="src/css/principal.css" />
+    <link rel="stylesheet" type="text/css" href="src/css/nav.css" />
+    <link rel="stylesheet" type="text/css" href="src/css/content.css" />
+    <link rel="stylesheet" type="text/css" href="src/css/form.css" />
+    <link rel="stylesheet" type="text/css" href="src/css/footer.css" />
+
+    <title>WorldSkills Leipzig / Leipziger Verkehrsbetriebe</title>
+    <script>
+      if (!localStorage.token) {
+        window.location.href = 'login.html';
+      }
+    </script>
+    <style>
+      .table-style {
+        border-collapse: collapse;
+      }
+      .table-style td,
+      .table-style th {
+        border: 1px solid black;
+      }
+      .table-style tr:nth-child(even) {
+        background-color: #dddddd;
+      }
+      .btn-info {
+        background-color: rgb(25, 25, 241);
+        color: white;
+        cursor: pointer;
+        padding: 10px 5px;
+        border: none;
+        border-radius: 5px;
+      }
+      .btn-danger {
+        background-color: rgb(241, 25, 47);
+        color: white;
+        cursor: pointer;
+        padding: 10px 5px;
+        border: none;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container" id="page">
+      <a href="index.html">
+        <div id="header">
+          <div id="logo"><!--WorldSkills Leipzig / Leipziger Verkehrsbetriebe--></div>
+        </div></a
+      >
+
+      <div id="mainmenu">
+        <ul>
+          <li>
+            <a href="line.html" title="Line"
+              ><span style="background-image: url(src/images/line.png)"></span
+              ><!--Line--></a
+            >
+          </li>
+          <li>
+            <a href="station.html" title="Station"
+              ><span style="background-image: url(src/images/station.png)"></span
+              ><!--Station--></a
+            >
+          </li>
+          <li>
+            <a href="vehicle.html" title="Vehicle"
+              ><span style="background-image: url(src/images/vehicle.png)"></span
+              ><!--Vehicle--></a
+            >
+          </li>
+          <li>
+            <a href="driver.html" title="Driver"
+              ><span style="background-image: url(src/images/driver.png)"></span
+              ><!--Driver--></a
+            >
+          </li>
+          <li>
+            <a href="xml.html" title="XML-XSD"
+              ><span style="background-image: url(src/images/xml.png)"></span
+              ><!--XML Schema--></a
+            >
+          </li>
+          <li>
+            <a href="user.html" title="User"
+              ><span style="background-image: url(src/images/user.png)"></span
+              ><!--User--></a
+            >
+          </li>
+        </ul>
+
+        <!-- Login / Logout -->
+        <div id="access">
+          <div>Webmaster (<a href="#">Logout</a>)</div>
+        </div>
+      </div>
+
+      <!-- mainmenu -->
+      <div class="breadcrumbs"><a href="#">Home</a> &raquo; <a href="#">Line</a> &raquo; <span>Create</span></div>
+      <!-- breadcrumbs -->
+
+      <div class="span-19">
+        <div id="content">
+          <h1>Create Line</h1>
+
+          <div class="form">
+            <form enctype="multipart/form-data" id="line-form-create" onsubmit="createForm(event)">
+              <p class="note">Fields with <span class="required">*</span> are required.</p>
+
+              <div class="row">
+                <label for="Line_name" class="required">Name <span class="required">*</span></label> <input size="50" maxlength="50" name="code" id="code" type="text" />
+              </div>
+
+              <div class="row">
+                <label for="Line_start_time_operation" class="required">Start Time Operation <span class="required">*</span></label>
+
+                <select name="start_time_operation" id="start_time_operation">
+                  <option value="00:00:00">00:00:00</option>
+                  <option value="01:00:00">01:00:00</option>
+                  <option value="02:00:00">02:00:00</option>
+                  <option value="03:00:00">03:00:00</option>
+                  <option value="04:00:00">04:00:00</option>
+                  <option value="05:00:00">05:00:00</option>
+                  <option value="06:00:00">06:00:00</option>
+                  <option value="07:00:00">07:00:00</option>
+                  <option value="08:00:00">08:00:00</option>
+                  <option value="09:00:00">09:00:00</option>
+                  <option value="10:00:00">10:00:00</option>
+                  <option value="11:00:00">11:00:00</option>
+                  <option value="12:00:00">12:00:00</option>
+                  <option value="13:00:00">13:00:00</option>
+                  <option value="14:00:00">14:00:00</option>
+                  <option value="15:00:00">15:00:00</option>
+                  <option value="16:00:00">16:00:00</option>
+                  <option value="17:00:00">17:00:00</option>
+                  <option value="18:00:00">18:00:00</option>
+                  <option value="19:00:00">19:00:00</option>
+                  <option value="20:00:00">20:00:00</option>
+                  <option value="21:00:00">21:00:00</option>
+                  <option value="22:00:00">22:00:00</option>
+                  <option value="23:00:00">23:00:00</option>
+                </select>
+              </div>
+
+              <div class="row">
+                <label for="Line_end_time_operation" class="required">End Time Operation <span class="required">*</span></label>
+                <select name="end_time_operation" id="end_time_operation">
+                  <option value="00:00:00">00:00:00</option>
+                  <option value="01:00:00">01:00:00</option>
+                  <option value="02:00:00">02:00:00</option>
+                  <option value="03:00:00">03:00:00</option>
+                  <option value="04:00:00">04:00:00</option>
+                  <option value="05:00:00">05:00:00</option>
+                  <option value="06:00:00">06:00:00</option>
+                  <option value="07:00:00">07:00:00</option>
+                  <option value="08:00:00">08:00:00</option>
+                  <option value="09:00:00">09:00:00</option>
+                  <option value="10:00:00">10:00:00</option>
+                  <option value="11:00:00">11:00:00</option>
+                  <option value="12:00:00">12:00:00</option>
+                  <option value="13:00:00">13:00:00</option>
+                  <option value="14:00:00">14:00:00</option>
+                  <option value="15:00:00">15:00:00</option>
+                  <option value="16:00:00">16:00:00</option>
+                  <option value="17:00:00">17:00:00</option>
+                  <option value="18:00:00">18:00:00</option>
+                  <option value="19:00:00">19:00:00</option>
+                  <option value="20:00:00">20:00:00</option>
+                  <option value="21:00:00">21:00:00</option>
+                  <option value="22:00:00">22:00:00</option>
+                  <option value="23:00:00">23:00:00</option>
+                </select>
+              </div>
+
+              <div class="row">
+                <label for="Line_type">Type</label>
+                <select name="type" id="type">
+                  <option value="Tram">Tram</option>
+                  <option value="Bus">Bus</option>
+                  <option value="Nightliner">Nightliner</option>
+                  <option value="Regionalbus">Regionalbus</option>
+                </select>
+              </div>
+
+              <div class="row">
+                <label for="Line_map" class="required">Map <span class="required">*</span></label>
+                <input id="ytLine_map" type="hidden" value="" name="map" /><input name="map" id="Line_map" type="file" />
+              </div>
+
+              <div class="row buttons">
+                <input type="submit" name="yt0" value="Create" />
+              </div>
+            </form>
+          </div>
+          <!-- form -->
+        </div>
+        <!-- content -->
+      </div>
+      <div class="span-5 last">
+        <div id="sidebar">
+          <div class="portlet">
+            <div class="portlet-decoration">
+              <div class="portlet-title">Operations</div>
+            </div>
+            <div class="portlet-content">
+              <ul class="operations">
+                <li><a href="#list" id="get_list">List Line</a></li>
+                <li><a href="#create_list" id="create_list">Manage Line</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!-- sidebar -->
+      </div>
+
+      <div class="clear"></div>
+
+      <div id="footer">
+        <ul>
+          <li class="sitemap"><a href="#">Site Map</a></li>
+          <li class="copyr"><a href="#">Copyright &copy; 2013 by LVB</a></li>
+          <li class="allright">
+            <a href="#">All Rights Reserved. <br />By WorldSkills International</a>
+          </li>
+        </ul>
+      </div>
+      <!-- footer -->
+    </div>
+    <!-- page -->
+    <script>
+      const content = document.getElementById('content');
+      async function createForm(event) {
+        event.preventDefault();
+        const form_create = document.getElementById('line-form-create');
+        const form_data = new FormData(form_create);
+        const data_store = await storeLineForm(form_data);
+        const message = document.createElement('p');
+        message.style.color = 'red';
+        message.innerHTML = data_store.message;
+        content.appendChild(message);
+      }
+      async function storeLineForm(data) {
+        const fetching_data = await fetch('http://127.0.0.1:8000/api/line', {
+          method: 'POST',
+          headers: {
+            Authorization: localStorage.token,
+          },
+          body: data,
+        });
+        const result = await fetching_data.json();
+        return result;
+      }
+
+      // get line api
+      async function getLine() {
+        const fetching = await fetch('http://127.0.0.1:8000/api/line', {
+          method: 'GET',
+          headers: {
+            Authorization: localStorage.token,
+          },
+        });
+        const result = await fetching.json();
+        return result;
+      }
+
+      // get list line
+      const get_list = document.getElementById('get_list');
+      get_list.addEventListener('click', async function () {
+        const content = document.getElementById('content');
+        const all_line = await getLine();
+
+        content.innerHTML = listLineTable(all_line);
+      });
+
+      // reload list line table
+      function listLineTable(all_line) {
+        let string = `<table class="table-style">
+              <tr>
+                <th>Code</th>
+                <th>Start Operation</th>
+                <th>End Operation</th>
+                <th>Type</th>
+                <th>Map</th>
+                <th>Action</th>
+              </tr>`;
+        all_line.data.map(function (single) {
+          return (string += `<tr>
+                <td>${single.code}</td>
+                <td>${single.start_time_operation}</td>
+                <td>${single.end_time_operation}</td>
+                <td>${single.type}</td>
+                <td><img src="http://127.0.0.1:8000/storage/${single.map}" alt="gambar map" width="100px" height="100px"></td>
+                <td>
+                  <button class='btn-info' onclick='editLineButton(this)' id='${single.id}'>Edit</button>
+                  <button class='btn-danger' onclick='deleteLineButton(this)' id='${single.id}'>Hapus</button>
+                </td>
+              </tr>`);
+        });
+        string += `</table>`;
+        return string;
+      }
+
+      // create line
+      const create_list = document.getElementById('create_list');
+      create_list.addEventListener('click', function () {
+        content.innerHTML = `
+              <h1>Create Line</h1>
+
+      <div class="form">
+        <form enctype="multipart/form-data" id="line-form-create" onsubmit="createForm(event)">
+          <p class="note">Fields with <span class="required">*</span> are required.</p>
+
+          <div class="row">
+            <label for="Line_name" class="required">Name <span class="required">*</span></label> <input size="50" maxlength="50" name="code" id="code" type="text" />
+          </div>
+
+          <div class="row">
+            <label for="Line_start_time_operation" class="required">Start Time Operation <span class="required">*</span></label>
+
+            <select name="start_time_operation" id="start_time_operation">
+              <option value="00:00:00">00:00:00</option>
+              <option value="01:00:00">01:00:00</option>
+              <option value="02:00:00">02:00:00</option>
+              <option value="03:00:00">03:00:00</option>
+              <option value="04:00:00">04:00:00</option>
+              <option value="05:00:00">05:00:00</option>
+              <option value="06:00:00">06:00:00</option>
+              <option value="07:00:00">07:00:00</option>
+              <option value="08:00:00">08:00:00</option>
+              <option value="09:00:00">09:00:00</option>
+              <option value="10:00:00">10:00:00</option>
+              <option value="11:00:00">11:00:00</option>
+              <option value="12:00:00">12:00:00</option>
+              <option value="13:00:00">13:00:00</option>
+              <option value="14:00:00">14:00:00</option>
+              <option value="15:00:00">15:00:00</option>
+              <option value="16:00:00">16:00:00</option>
+              <option value="17:00:00">17:00:00</option>
+              <option value="18:00:00">18:00:00</option>
+              <option value="19:00:00">19:00:00</option>
+              <option value="20:00:00">20:00:00</option>
+              <option value="21:00:00">21:00:00</option>
+              <option value="22:00:00">22:00:00</option>
+              <option value="23:00:00">23:00:00</option>
+            </select>
+          </div>
+
+          <div class="row">
+            <label for="Line_end_time_operation" class="required">End Time Operation <span class="required">*</span></label>
+            <select name="end_time_operation" id="end_time_operation">
+              <option value="00:00:00">00:00:00</option>
+              <option value="01:00:00">01:00:00</option>
+              <option value="02:00:00">02:00:00</option>
+              <option value="03:00:00">03:00:00</option>
+              <option value="04:00:00">04:00:00</option>
+              <option value="05:00:00">05:00:00</option>
+              <option value="06:00:00">06:00:00</option>
+              <option value="07:00:00">07:00:00</option>
+              <option value="08:00:00">08:00:00</option>
+              <option value="09:00:00">09:00:00</option>
+              <option value="10:00:00">10:00:00</option>
+              <option value="11:00:00">11:00:00</option>
+              <option value="12:00:00">12:00:00</option>
+              <option value="13:00:00">13:00:00</option>
+              <option value="14:00:00">14:00:00</option>
+              <option value="15:00:00">15:00:00</option>
+              <option value="16:00:00">16:00:00</option>
+              <option value="17:00:00">17:00:00</option>
+              <option value="18:00:00">18:00:00</option>
+              <option value="19:00:00">19:00:00</option>
+              <option value="20:00:00">20:00:00</option>
+              <option value="21:00:00">21:00:00</option>
+              <option value="22:00:00">22:00:00</option>
+              <option value="23:00:00">23:00:00</option>
+            </select>
+          </div>
+
+          <div class="row">
+            <label for="Line_type">Type</label>
+            <select name="type" id="type">
+              <option value="Tram">Tram</option>
+              <option value="Bus">Bus</option>
+              <option value="Nightliner">Nightliner</option>
+              <option value="Regionalbus">Regionalbus</option>
+            </select>
+          </div>
+
+          <div class="row">
+            <label for="Line_map" class="required">Map <span class="required">*</span></label>
+            <input id="ytLine_map" type="hidden" value="" name="map" /><input name="map" id="Line_map" type="file" />
+          </div>
+
+          <div class="row buttons">
+            <input type="submit" name="yt0" value="Create" />
+          </div>
+        </form>
+      </div>`;
+      });
+    </script>
+    <script>
+      // update line
+      async function editLineButton(e) {
+        const fetch_edit_line = await fetch(`http://127.0.0.1:8000/api/line/${e.id}/edit`, {
+          method: 'GET',
+          headers: {
+            Authorization: localStorage.token,
+          },
+        });
+        const result = await fetch_edit_line.json();
+        content.innerHTML = `
+              <h1>Create Line</h1>
+
+      <div class="form">
+        <form enctype="multipart/form-data" id="edit_form" onsubmit="updateLineButton(event)">
+          <p class="note">Fields with <span class="required">*</span> are required.</p>
+          <input type='hidden' value='${result.data.id}' id='line_id' />
+          <div class="row">
+            <label for="Line_name" class="required">Name <span class="required">*</span></label> <input size="50" value='${result.data.code}' maxlength="50" name="code" id="code" type="text" />
+          </div>
+
+          <div class="row">
+            <label for="Line_start_time_operation" class="required">Start Time Operation <span class="required">*</span></label>
+
+            <select name="start_time_operation" id="start_time_operation">
+              <option value="00:00:00">00:00:00</option>
+              <option value="01:00:00">01:00:00</option>
+              <option value="02:00:00">02:00:00</option>
+              <option value="03:00:00">03:00:00</option>
+              <option value="04:00:00">04:00:00</option>
+              <option value="05:00:00">05:00:00</option>
+              <option value="06:00:00">06:00:00</option>
+              <option value="07:00:00">07:00:00</option>
+              <option value="08:00:00">08:00:00</option>
+              <option value="09:00:00">09:00:00</option>
+              <option value="10:00:00">10:00:00</option>
+              <option value="11:00:00">11:00:00</option>
+              <option value="12:00:00">12:00:00</option>
+              <option value="13:00:00">13:00:00</option>
+              <option value="14:00:00">14:00:00</option>
+              <option value="15:00:00">15:00:00</option>
+              <option value="16:00:00">16:00:00</option>
+              <option value="17:00:00">17:00:00</option>
+              <option value="18:00:00">18:00:00</option>
+              <option value="19:00:00">19:00:00</option>
+              <option value="20:00:00">20:00:00</option>
+              <option value="21:00:00">21:00:00</option>
+              <option value="22:00:00">22:00:00</option>
+              <option value="23:00:00">23:00:00</option>
+            </select>
+          </div>
+
+          <div class="row">
+            <label for="Line_end_time_operation" class="required">End Time Operation <span class="required">*</span></label>
+            <select name="end_time_operation" id="end_time_operation">
+              <option value="00:00:00">00:00:00</option>
+              <option value="01:00:00">01:00:00</option>
+              <option value="02:00:00">02:00:00</option>
+              <option value="03:00:00">03:00:00</option>
+              <option value="04:00:00">04:00:00</option>
+              <option value="05:00:00">05:00:00</option>
+              <option value="06:00:00">06:00:00</option>
+              <option value="07:00:00">07:00:00</option>
+              <option value="08:00:00">08:00:00</option>
+              <option value="09:00:00">09:00:00</option>
+              <option value="10:00:00">10:00:00</option>
+              <option value="11:00:00">11:00:00</option>
+              <option value="12:00:00">12:00:00</option>
+              <option value="13:00:00">13:00:00</option>
+              <option value="14:00:00">14:00:00</option>
+              <option value="15:00:00">15:00:00</option>
+              <option value="16:00:00">16:00:00</option>
+              <option value="17:00:00">17:00:00</option>
+              <option value="18:00:00">18:00:00</option>
+              <option value="19:00:00">19:00:00</option>
+              <option value="20:00:00">20:00:00</option>
+              <option value="21:00:00">21:00:00</option>
+              <option value="22:00:00">22:00:00</option>
+              <option value="23:00:00">23:00:00</option>
+            </select>
+          </div>
+
+          <div class="row">
+            <label for="Line_type">Type</label>
+            <select name="type" id="type">
+              <option value="Tram">Tram</option>
+              <option value="Bus">Bus</option>
+              <option value="Nightliner">Nightliner</option>
+              <option value="Regionalbus">Regionalbus</option>
+            </select>
+          </div>
+
+          <div class="row">
+            <label for="Line_map" class="required">Map <span class="required">*</span></label>
+            <input id="ytLine_map" type="hidden" value="" name="map" /><input name="map" id="Line_map" type="file" />
+          </div>
+
+          <div class="row buttons">
+            <input type="submit" name="yt0" value="Update" />
+          </div>
+        </form>
+      </div>`;
+        const select_start_operation = document.getElementById('start_time_operation');
+        const select_end_operation = document.getElementById('end_time_operation');
+        const select_type = document.getElementById('type');
+        const type_options = select_type.options;
+        const start_options = select_start_operation.options;
+        const end_options = select_end_operation.options;
+        for (let i = 0; i < start_options.length; i++) {
+          if (start_options[i].value == result.data.start_time_operation) {
+            start_options[i].setAttribute('selected', true);
+          }
+          if (end_options[i].value == result.data.end_time_operation) {
+            end_options[i].setAttribute('selected', true);
+          }
+        }
+        for (let x = 0; x < type_options.length; x++) {
+          if (type_options[x].value == result.data.type) {
+            type_options[x].setAttribute('selected', true);
+          }
+        }
+      }
+      async function updateLineButton(event) {
+        event.preventDefault();
+        const edit_form = document.getElementById('edit_form');
+        const line_id = document.getElementById('line_id').value;
+        const data_edit_form = new FormData(edit_form);
+        for (let value of data_edit_form.values()) {
+          console.log(value);
+        }
+        // progress
+        const fetch_update_line = await fetch(`http://127.0.0.1:8000/api/line/${line_id}?_method=PUT`, {
+          method: 'POST',
+          headers: {
+            Authorization: localStorage.token,
+          },
+          body: data_edit_form,
+        }).catch((err) => console.log(err));
+        const result = await fetch_update_line.json();
+        console.log(result);
+        const all_line = await getLine();
+        content.innerHTML = listLineTable(all_line);
+      }
+      // delete line
+      async function deleteLineButton(e) {
+        if (confirm('Yakin ingin menghapus?')) {
+          const line_delete = await fetch(`http://127.0.0.1:8000/api/line/${e.id}`, {
+            method: 'DELETE',
+            headers: {
+              Authorization: localStorage.token,
+            },
+          }).catch((err) => console.log(err));
+          const result = await line_delete.json();
+          alert(result.message);
+          const all_line = await getLine();
+          content.innerHTML = listLineTable(all_line);
+        }
+      }
+    </script>
+  </body>
+</html>
